@@ -23,28 +23,50 @@ You can find a detailed [project rubric, here](https://review.udacity.com/#!/rub
 
 ---
 
-## Setup the Environment
+## II. Setup the Environment
 
 * Create a virtualenv with Python 3.7 and activate it. Refer to this link for help on specifying the Python version in the virtualenv. 
+
+### 1. Window OS
+
+```bash
+py -m pip install --user virtualenv
+# You should have Python 3.7 available in your host. 
+# Check the Python path using `which python3`
+# Use a command similar to this one:
+py -m virtualenv .devops
+source .devops/Scripts/activate
+```
+
+### 2. Ubuntu/Linux OS
+
 ```bash
 python3 -m pip install --user virtualenv
 # You should have Python 3.7 available in your host. 
 # Check the Python path using `which python3`
 # Use a command similar to this one:
-python3 -m virtualenv --python=<path-to-Python3.7> .devops
-source .devops/bin/activate
+python3 -m virtualenv .devops
+source .devops/Scripts/activate
 ```
+
 * Run `make install` to install the necessary dependencies
 
-### Running `app.py`
+### 3. Running application
 
-1. Standalone:  `python app.py`
-2. Run in Docker:  `./run_docker.sh`
-3. Run in Kubernetes:  `./run_kubernetes.sh`
+#### 1. Standalone:  
+Run `python app.py`
 
-### Kubernetes Steps
+#### 2. Run in Docker:
+1. Run `./run_docker.sh` to containerize the application to docker container.
+2. Run `./make_prediction.sh` to test the predict API on local.
 
-* Setup and Configure Docker locally
-* Setup and Configure Kubernetes locally
-* Create Flask app in Container
-* Run via kubectl
+#### 3. Run in Kubernetes:  
+1. Run `./upload_docker.sh` to push the docker image into docker hub.
+2. Run `minikube start` to start the local kubernetes cluster
+3. Run `kubectl config view` to view the kubernetes default configurations and verify that the cluster is with a certificate-authority and server.
+4. Run `./run_kubernetes.sh` when the pod is in [Running] state, but you just have to wait a few minutes until the pod is ready, then you can run the script again
+5. Run `./make_prediction.sh` while calling `./run_kubernetes.sh`
+
+##### 4. Clean up kubernetes cluster
+1. Run `minikube delete`
+2. Run `minikube stop`
